@@ -59,7 +59,7 @@ Example Playbook
         vsphere_template_name: "centos_template"
 
       roles:
-         - sathiyarajperiyannan.vsphere 
+         - SathiyarajPeriyannan.vsphere 
 
 License
 -------
