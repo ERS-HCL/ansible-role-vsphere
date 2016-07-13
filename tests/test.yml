@@ -11,7 +11,7 @@
     vsphere_template_name: "centos_template"
 
   roles:
-    - role_under_test
+    - ansible-role-vsphere 
 
 ...
 
