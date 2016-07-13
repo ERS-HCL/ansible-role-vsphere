@@ -30,6 +30,8 @@ galaxy_info:
     - cloud
     - virtualization
     - virtualmachine
+    
+dependencies: []
 
 ...
 

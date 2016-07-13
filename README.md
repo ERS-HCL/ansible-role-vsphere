@@ -2,7 +2,7 @@ ansible-role-vsphere
 ====================
 
 An Ansible role that creates Virtual machines in the vmware virtualization environment. 
-IP address of the virtual machine is updated in the inventory file for further use in other roles/playbook. 
+IP address of the virtual machines are updated in the inventory file for further use in other roles/playbook. 
 
 Requirements
 ------------
@@ -50,13 +50,13 @@ Example Playbook
     - hosts: hosts
       connection: local
       vars:
-	vsphere_vcenter_hostname: "vcenter1"
-  	vsphere_vcenter_username: "root"
-	vsphere_vcenter_password: "passwd"
-	vsphere_datacenter_name: "datacenter1"
-	vsphere_esxi_host: "esx1"
-	vsphere_datastore_name: "datastore1"
-	vsphere_template_name: "centos_template"
+        vsphere_vcenter_hostname: "vcenter1"
+        vsphere_vcenter_username: "root"
+        vsphere_vcenter_password: "passwd"
+        vsphere_datacenter_name: "datacenter1"
+        vsphere_esxi_host: "esx1"
+        vsphere_datastore_name: "datastore1"
+        vsphere_template_name: "centos_template"
 
       roles:
          - sathiyarajperiyannan.vsphere 
