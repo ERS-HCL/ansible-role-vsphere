@@ -1,0 +1,17 @@
+---
+- hosts: hosts
+  connection: local
+  vars:
+    vsphere_vcenter_hostname: "vcenter1"
+    vsphere_vcenter_username: "root"
+    vsphere_vcenter_password: "passwd"
+    vsphere_datacenter_name: "datacenter1"
+    vsphere_esxi_host: "esx1"
+    vsphere_datastore_name: "datastore1"
+    vsphere_template_name: "centos_template"
+
+  roles:
+    - vsphere
+
+...
+

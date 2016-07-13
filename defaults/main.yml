@@ -1,0 +1,23 @@
+---
+# defaults file for vsphere
+
+# Host name or IP address of the vCenter hostname
+vsphere_vcenter_hostname: "vcenter1"
+
+# Credentials to connect to the vCenter server
+vsphere_vcenter_username: "root"
+vsphere_vcenter_password: "passwd"
+
+# Name of the datacenter in the vCenter where the virtual machines will be created
+vsphere_datacenter_name: "New Datacenter"
+
+# Name or IP address of the ESXi server the created virtual machines will be associated with
+vsphere_esxi_host: "esx1"
+
+# Datastore in the vCenter where the hard disks of the virtual machines will be stored
+vsphere_datastore_name: "datastore1"
+
+# Name of the vm template(Preinstalled OS) which will get installed
+vsphere_template_name: "centos_template"
+
+...

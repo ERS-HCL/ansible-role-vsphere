@@ -1,0 +1,6 @@
+
+[hosts]
+vm1 cpu=2 
+vm2 cpu=2 memory=2048 
+vm3 cpu=2 memory=1024 disk=20
+

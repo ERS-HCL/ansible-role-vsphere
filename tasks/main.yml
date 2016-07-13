@@ -1,0 +1,90 @@
+---
+# tasks file for vsphere
+#
+
+- name: Creating the virtual machines
+  vsphere_guest:
+    vcenter_hostname: "{{ vsphere_vcenter_hostname }}" 
+    username: "{{ vsphere_vcenter_username }}"
+    password: "{{ vsphere_vcenter_password }}"
+    guest: "{{ inventory_hostname }}"
+    from_template: yes
+    template_src: "{{ vsphere_template_name }}"
+    esxi:
+      datacenter: "{{ vsphere_datacenter_name }}"
+      hostname: "{{ vsphere_esxi_host }}"
+    power_on_after_clone: False
+
+- name: Reconfigure the machines based on the specifications provided
+  vsphere_guest:
+    vcenter_hostname: "{{ vsphere_vcenter_hostname }}" 
+    username: "{{ vsphere_vcenter_username }}"
+    password: "{{ vsphere_vcenter_password }}"
+    guest: "{{ inventory_hostname }}"
+    state: reconfigured
+    force: True
+    vm_extra_config:
+      vcpu.hotadd: yes
+      mem.hotadd:  yes
+      notes: This VM is created through ansible
+    vm_disk:
+      disk1:
+        size_gb: "{{ disk | default(20) }}"
+        type: thin
+        datastore: "{{ vsphere_datastore_name }}"
+    vm_nic:
+      nic1:
+        type: vmxnet3
+        network: VM Network
+        network_type: standard
+    vm_hardware:
+      memory_mb: "{{ memory | default(2048) }}"
+      num_cpus: "{{ cpu | default(2) }}"
+      osid: Guest
+      scsi: paravirtual
+    esxi:
+      datacenter: "{{ vsphere_datacenter_name }}"
+      hostname: "{{ vsphere_esxi_host }}"
+
+- name: Power on the Virtual machines
+  vsphere_guest:
+    vcenter_hostname: "{{ vsphere_vcenter_hostname }}" 
+    username: "{{ vsphere_vcenter_username }}"
+    password: "{{ vsphere_vcenter_password }}"
+    guest: "{{ inventory_hostname }}"
+    state: powered_on
+
+- name: Wait for the virtual machines to boot and  acquire the IP
+  vsphere_guest:
+    vcenter_hostname: "{{ vsphere_vcenter_hostname }}" 
+    username: "{{ vsphere_vcenter_username }}"
+    password: "{{ vsphere_vcenter_password }}"
+    guest: "{{ inventory_hostname }}"
+    vmware_guest_facts: Yes
+  until:  hw_eth0.ipaddresses[0]  is defined 
+  retries: 10
+  delay: 20 
+
+- name: Displying the IP address 
+  debug: msg="IP address {{ hw_eth0.ipaddresses[0] }}"
+
+# ?! neagetes the search of ansible_ssh_host if it is already replaced - idempotent
+# # # .* matching is preserved for reuse in the line: as \1
+
+- name: Add the acquired IP address to the inventory file for each virtual machine
+  lineinfile:
+    dest: "{{ inventory_file }}"
+    regexp: "^{{ inventory_hostname }} (?!ansible_ssh_host=)(.*)"
+    line: '{{ inventory_hostname }} ansible_ssh_host={{ hw_eth0.ipaddresses[0] }} \1'
+    backrefs: True
+    state: present
+
+- name: Replace the new IP address in the inventory file if IP got changed
+  lineinfile:
+    dest: "{{ inventory_file }}"
+    regexp: '^{{ inventory_hostname }} ansible_ssh_host=([0-9.]+)\s+(.*)$'
+    line: '{{ inventory_hostname }} ansible_ssh_host={{ hw_eth0.ipaddresses[0] }} \2'
+    backrefs: True
+    state: present
+
+...

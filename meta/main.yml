@@ -1,0 +1,35 @@
+---
+galaxy_info:
+  author: Sathiyaraj Periyannan
+  description: Virtual Machine creation in vCenter environment
+  company: HCL Technologies Ltd
+  license: license (BSD, MIT)
+  min_ansible_version: 1.8
+  platforms:
+    - name: EL
+      versions:
+        - all
+    - name: Fedora
+      versions:
+        - all
+    - name: Ubuntu
+      versions:
+        - all
+    - name: GenericLinux
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+
+  galaxy_tags:
+    - vsphere
+    - vcenter
+    - vmware
+    - automation
+    - cloud
+    - virtualization
+    - virtualmachine
+
+...
+
